@@ -12,7 +12,7 @@ Usage
 	HEADERS += $$PWD/jsmin.h
 	SOURCES += $$PWD/jsmin.cpp
 	
-3. Include jsmin.h from file rcc.cpp, and add the following 4 lines inside RCCFileInfo::writeDataBlob()
+3. Include jsmin.h from file rcc.cpp, and add the following 4 lines inside RCCFileInfo::writeDataBlob
 	//find the data to be written
 	    QFile file(m_fileInfo.absoluteFilePath());
 	    if (!file.open(QFile::ReadOnly)) {
