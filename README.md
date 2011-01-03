@@ -1,26 +1,18 @@
-QMLMin Qt RCC Extension
-======
+QMLMin Qt RCC Patch
+===================
 
-Feature addition to QT rcc for minify QML and JS file on the final executable
+This patch adds the ability to minify QML and JS files before they are embedded in the final executable. The minifying is done with Douglas Crockford's JSMin algorithm (http://www.crockford.com/javascript/jsmin.html), which is very safe and works well with QML files.
 
-(test with Qt 4.8.0)
-Find your "rcc" directory source folder.
-Add the files "jsmin.h" and "jsmin.cpp" to the project (.pri or .pro)
+Usage
+-----
 
+1. Go to the rcc source directory (under your Qt source tree: src/tools/rcc)
 
-Add the include to jsmin.h to the file rcc.cpp :
-	#include <QtCore/QIODevice>
-	#include <QtCore/QLocale>
-	#include <QtCore/QStack>
-
-	#include <QtXml/QDomDocument>
-
-	#include "jsmin.h"
-
-	QT_BEGIN_NAMESPACE
-
-
-Again on rcc.cpp, on the definition of RCCFileInfo::writeDataBlob() function, add the 4 lines as follow:
+2. Download the files "jsmin.h" and "jsmin.cpp" and add them to rcc.pri:
+	HEADERS += $$PWD/jsmin.h
+	SOURCES += $$PWD/jsmin.cpp
+	
+3. Include jsmin.h from file rcc.cpp, and add the following 4 lines inside RCCFileInfo::writeDataBlob()
 	//find the data to be written
 	    QFile file(m_fileInfo.absoluteFilePath());
 	    if (!file.open(QFile::ReadOnly)) {
@@ -38,5 +30,4 @@ Again on rcc.cpp, on the definition of RCCFileInfo::writeDataBlob() function, ad
 	    // Check if compression is useful for this file
 	    if (m_compressLevel != 0 && data.size() != 0) {
 
-
-After rebuild the project move the generated ./rcc binary to the bin/ folder with your qMake.
+4. Rebuild rcc.pro, and check that the executable has been correctly installed into the bin/ folder under your Qt tree (together with the qmake executable)
